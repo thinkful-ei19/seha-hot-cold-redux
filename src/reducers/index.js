@@ -22,12 +22,16 @@ export const gameReducer = (state=initialState, action) => {
     let guess;
 
     if(action.type === actions.MAKE_GUESS){
-            guess = parseInt(guess, 10)
+            guess = parseInt(action.guess, 10)
             if(isNaN(guess)) {
-            feedback: 'Please enter a valid number';    
-        }
+            feedback= 'Please enter a valid number';    
         
-    }
+        return Object.assign({}, state, {
+            feedback,
+            guesses: [...state.guesses, guess]
+        });
+    } 
+    
     const difference = Math.abs(guess - state.correctAnswer);
 
     if (difference >= 50) {
@@ -45,6 +49,7 @@ export const gameReducer = (state=initialState, action) => {
         feedback,
         guesses: [...state.guesses, guess]
     });
+}
 
     if (action.type === actions.GENERATE_AURAL_UPDATE ) {
         const { guesses, feedback } = state;
@@ -57,5 +62,6 @@ export const gameReducer = (state=initialState, action) => {
     }
     return Object.assign ({}, state, {auralStatus});
 }
+
 return state;
 };
